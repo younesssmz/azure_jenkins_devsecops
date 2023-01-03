@@ -23,8 +23,8 @@ pipeline {
       stage('Docker Build and Push'){
         steps {
           sh 'printenv'
-          sh 'docker build -t younesssmz/numeric-ap:""$GIT_COMMIT"" .'
-          sh 'docker push younesssmz/numeric-ap:""$GIT_COMMIT"" .'
+          sh 'docker build -t younesssmz/numeric-app:""$GIT_COMMIT"" .'
+          sh 'docker push younesssmz/numeric-app:""$GIT_COMMIT""
         }
 
       }
