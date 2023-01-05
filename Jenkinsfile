@@ -33,6 +33,17 @@ pipeline {
       }
     }
 
+    stage('SonarQube - SAST') {
+      steps {
+        sh "mvn sonar:sonar -Dsonar.projectKey=numeric-app -Dsonar.host.url=http://devsecops-test.francecentral.cloudapp.azure.com:9000 -Dsonar.login=4d9d72c8d023204cc7be81e1589fa5d822e353f8"
+      }
+      post {
+        always {
+          pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
+        }
+      }
+    }
+
     stage('Docker Build and Push') {
       steps {
         withDockerRegistry([credentialsId: "DockerHub", url: ""]) {
