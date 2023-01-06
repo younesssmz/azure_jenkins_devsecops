@@ -46,16 +46,15 @@ pipeline {
       }
     }
 
-    stage('Vulnerability Scan - Docker ') {
+    stage('Dependency Check') {
       steps {
-        sh "mvn dependency-check:check"
-      }
-      post {
-        always {
-          dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
-        }
+        dependencyCheck analyzers: [mavenAnalyzer(), jarAnalyzer()],
+        reportOutputDirectory: 'dependency-check-report',
+        autoupdate: false,
+        failBuildOnCVSS: 7
       }
     }
+
 
     stage('Docker Build and Push') {
       steps {
