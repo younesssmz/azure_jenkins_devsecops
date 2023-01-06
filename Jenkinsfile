@@ -48,12 +48,11 @@ pipeline {
 
     stage('Dependency Check') {
       steps {
-        dependencyCheck analyzers: [mavenAnalyzer(), jarAnalyzer()],
-                        reportOutputDirectory: 'dependency-check-report',
-                        autoupdate: false,
-                        failBuildOnCVSS: 7
+          mavenDependencyCheck reportOutputDirectory: 'dependency-check-report',
+                               failBuildOnCVSS: 7
       }
     }
+
 
 
     stage('Docker Build and Push') {
