@@ -1,6 +1,15 @@
 pipeline {
   agent any
 
+  environment{
+    deploymentName = "devsecops"
+    containerName = "devsecops-container"
+    serviceName = "devsecops-svc"
+    imageName = "younesssmz/numeric-app:${GIT_COMMIT}"
+    applicationURL="http://devsecops-test.francecentral.cloudapp.azure.com/"
+    aplicationURI="/increment/99"
+  }
+
   stages {
 
     stage('Build Artifact - Maven') {
@@ -71,8 +80,8 @@ pipeline {
     stage('Kubernetes Deployment - DEV') {
       steps {
         withKubeConfig([credentialsId: 'kubeconfig']) {
-          sh "sed -i 's#replace#younesssmz/numeric-app:${GIT_COMMIT}#g' k8s_deployment_service.yaml"
-          sh "kubectl apply -f k8s_deployment_service.yaml"
+          sh "bash k8s-deployment.sh"
+          sh "bash k8s-deployment-rollout-status.sh"
         }
       }
     }
