@@ -63,7 +63,7 @@ pipeline {
     }
 
     stage('Vulnerability Scan - Kubernetes'){
-      step {
+      steps {
         sh 'docker run --rm -v $(pwd):/project openpolicyagnt/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
       }
     }
